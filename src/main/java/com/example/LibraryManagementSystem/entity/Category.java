@@ -1,5 +1,6 @@
 package com.example.LibraryManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,12 +18,11 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column
     private String name;
 
-    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
-    private List<Book> books;
-
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private List<Books> books;
 }

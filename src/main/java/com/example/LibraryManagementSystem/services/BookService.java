@@ -1,6 +1,5 @@
 package com.example.LibraryManagementSystem.services;
 
-import com.example.LibraryManagementSystem.entity.Author;
 import com.example.LibraryManagementSystem.entity.Books;
 import com.example.LibraryManagementSystem.repository.BookRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +13,19 @@ public class BookService {
     @Autowired
     private BookRepo bookRepo;
 
-    public List<Author> getAllBooks() {
+    public List<Books> getAllBooks() {
         return bookRepo.findAll();
     }
 
-    public Author getBookById(int id) {
-        return bookRepo.findById(id);
+    public Books getBookById(Long id) {
+        return bookRepo.findById(id).orElse(null);
     }
 
-    public Books saveOrUpdate(Books book) {
+    public Books saveOrUpdateBook(Books book) {
         return bookRepo.save(book);
     }
 
-    public void deleteBookById(int id) {
+    public void deleteBookById(Long id) {
         bookRepo.deleteById(id);
     }
 }

@@ -3,5 +3,5 @@ package com.example.LibraryManagementSystem.repository;
 import com.example.LibraryManagementSystem.entity.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PublisherRepo extends JpaRepository<Publisher, Integer> {
+public interface PublisherRepo extends JpaRepository<Publisher, Long> {
 }

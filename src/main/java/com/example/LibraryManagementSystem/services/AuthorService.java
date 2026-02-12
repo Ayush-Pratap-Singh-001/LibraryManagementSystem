@@ -17,16 +17,15 @@ public class AuthorService {
         return authorRepo.findAll();
     }
 
-    public Author getAuthorById(int id) {
-        return authorRepo.findById(id)
-                .orElse(() -> new RuntimeException("Given id is incorrect"));
+    public Author getAuthorById(Long id) {
+        return authorRepo.findById(id).orElse(null);
     }
 
-    public Author saveOrUpdate(Author author) {
+    public Author saveOrUpdateAuthor(Author author) {
         return authorRepo.save(author);
     }
 
-    public void deleteAuthorById(int id) {
+    public void deleteAuthorById(Long id) {
         authorRepo.deleteById(id);
     }
 }
