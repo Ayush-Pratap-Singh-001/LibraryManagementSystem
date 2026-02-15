@@ -1,28 +1,29 @@
 package com.example.LibraryManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.awt.print.Book;
-import java.util.List;
+import java.util.*;
 
 @Entity
+@Table(name = "authors")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name="authors")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "authors")
-    @JsonIgnore
-    private List<Books> books;
+    private Set<Book> books = new HashSet<>();
+
+    public Author(String name) {
+        this.name = name;
+    }
 }

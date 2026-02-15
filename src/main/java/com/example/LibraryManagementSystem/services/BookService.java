@@ -1,31 +1,21 @@
 package com.example.LibraryManagementSystem.services;
 
-import com.example.LibraryManagementSystem.entity.Books;
-import com.example.LibraryManagementSystem.repository.BookRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.LibraryManagementSystem.dto.BookRequest;
+import com.example.LibraryManagementSystem.entity.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BookService {
+public interface BookService {
 
-    @Autowired
-    private BookRepo bookRepo;
+    Book createBook(BookRequest request);
 
-    public List<Books> getAllBooks() {
-        return bookRepo.findAll();
-    }
+    List<Book> getAllBooks();
 
-    public Books getBookById(Long id) {
-        return bookRepo.findById(id).orElse(null);
-    }
+    Book getBookById(Long id);
 
-    public Books saveOrUpdateBook(Books book) {
-        return bookRepo.save(book);
-    }
+    Book updateBook(Long id, BookRequest request);
 
-    public void deleteBookById(Long id) {
-        bookRepo.deleteById(id);
-    }
+    void deleteBook(Long id);
 }

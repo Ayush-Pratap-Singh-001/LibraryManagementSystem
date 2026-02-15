@@ -3,5 +3,10 @@ package com.example.LibraryManagementSystem.repository;
 import com.example.LibraryManagementSystem.entity.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AuthorRepo extends JpaRepository<Author, Long> {
+import java.util.Optional;
+
+public interface AuthorRepository extends JpaRepository<Author, Long> {
+
+    Optional<Author> findByName(String name);
+
 }

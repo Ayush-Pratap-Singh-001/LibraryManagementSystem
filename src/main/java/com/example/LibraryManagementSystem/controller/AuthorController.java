@@ -1,54 +1,49 @@
 package com.example.LibraryManagementSystem.controller;
 
 import com.example.LibraryManagementSystem.entity.Author;
-import com.example.LibraryManagementSystem.services.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.example.LibraryManagementSystem.exception.ResourceNotFoundException;
+import com.example.LibraryManagementSystem.repository.AuthorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/authors")
+@RequiredArgsConstructor
 public class AuthorController {
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorRepository authorRepository;
 
     @GetMapping
-    public ResponseEntity<List<Author>> getAllAuthors() {
-        return ResponseEntity.ok(authorService.getAllAuthors());
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable Long id) {
-        Author author = authorService.getAuthorById(id);
-        if (author == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(author);
+    public Author getAuthorById(@PathVariable Long id) {
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
     }
 
     @PostMapping
-    public ResponseEntity<Author> saveAuthor(@RequestBody Author author) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(authorService.saveOrUpdateAuthor(author));
+    public Author createAuthor(@RequestBody Author author) {
+        return authorRepository.save(author);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody Author author) {
-        Author existing = authorService.getAuthorById(id);
-        if (existing == null) {
-            return ResponseEntity.notFound().build();
-        }
-        author.setId(id);
-        return ResponseEntity.ok(authorService.saveOrUpdateAuthor(author));
+    public Author updateAuthor(@PathVariable Long id, @RequestBody Author authorDetails) {
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
+        author.setName(authorDetails.getName());
+        return authorRepository.save(author);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
-        authorService.deleteAuthorById(id);
-        return ResponseEntity.noContent().build();
+    public String deleteAuthor(@PathVariable Long id) {
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
+        authorRepository.delete(author);
+        return "Author deleted successfully";
     }
 }

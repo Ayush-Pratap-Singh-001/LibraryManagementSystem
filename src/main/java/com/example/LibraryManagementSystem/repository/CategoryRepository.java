@@ -3,5 +3,10 @@ package com.example.LibraryManagementSystem.repository;
 import com.example.LibraryManagementSystem.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepo extends JpaRepository<Category, Long> {
+import java.util.Optional;
+
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    Optional<Category> findByName(String name);
+
 }
